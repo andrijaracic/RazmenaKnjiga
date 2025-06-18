@@ -1,27 +1,32 @@
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace RazmenaKnjiga.Models
 {
-	public class Knjige
-	{
-		[BsonId]
-		[BsonRepresentation(BsonType.ObjectId)]
-		public string knjigeID { get; set; }
+    public class Knjiga
+    {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
 
-		[BsonElement("naslov")]
-		public string naslov { get; set; }
+        [BsonElement("Naslov")]
+        public string Naslov { get; set; }
 
-		[BsonElement("autor")]
-		public string autor { get; set; }
+        [BsonElement("Autor")]
+        public string Autor { get; set; }
 
-		[BsonElement("zanr")]
-		public string zanr { get; set; }
+        public string Zanr { get; set; }
 
-		[BsonElement("opis")]
-		public string opis { get; set; }
+        public string Opis { get; set; }
 
-		[BsonElement("korisnikID")]
-		public string korisnikID { get; set; } // ID korisnika koji je postavio knjigu
-	}
+        public string Stanje { get; set; }  // npr. Novo, Polovno, Oštećeno
+
+        public string Grad { get; set; }
+
+        public string SlikaBase64 { get; set; }  // Slika kao Base64 string
+
+        public DateTime DatumDodavanja { get; set; } = DateTime.UtcNow;
+
+        public string VlasnikId { get; set; }  // ID korisnika koji je postavio knjigu
+    }
 }
