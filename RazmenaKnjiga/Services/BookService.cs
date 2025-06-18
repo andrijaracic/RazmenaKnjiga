@@ -1,6 +1,6 @@
 ﻿using RazmenaKnjiga.Models;
-using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 
 namespace RazmenaKnjiga.Services
@@ -9,12 +9,12 @@ namespace RazmenaKnjiga.Services
     {
         private readonly IMongoCollection<Knjiga> _knjige;
 
-        public BookService(IConfiguration config)
+        public BookService(IMongoClient mongoClient, IConfiguration config)
         {
-            var client = new MongoClient(config["MongoDB:ConnectionString"]);
-            var database = client.GetDatabase(config["MongoDB:DatabaseName"]);
+            var database = mongoClient.GetDatabase(config["MongoDB:DatabaseName"]);
             _knjige = database.GetCollection<Knjiga>("Knjige");
         }
+
 
         public List<Knjiga> Get() =>
             _knjige.Find(knjiga => true).ToList();
