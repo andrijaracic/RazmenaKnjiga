@@ -1,0 +1,132 @@
+﻿@page
+@model RazmenaKnjiga.Pages.RegisterModel
+@{
+    ViewData["Title"] = "Registracija";
+}
+<style>
+    body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #e3f2fd, #bbdefb);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-container {
+    background-color: white;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 400px;
+}
+
+.form-container h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #1976d2;
+}
+
+.form-container label {
+    display: block;
+    margin-top: 15px;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-container input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+.form-container button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background-color: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.form-container button:hover {
+    background-color: #1565c0;
+}
+
+.poruka {
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+</style>
+
+<div class="form-container">
+    <h2>Registracija</h2>
+
+    <div id="poruka" style="color: red;"></div>
+
+    <form id="register-form">
+        <div>
+            <label for="username">Korisničko ime:</label>
+            <input type="text" id="username" required />
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" required />
+        </div>
+        <div>
+            <label for="password">Lozinka:</label>
+            <input type="password" id="password" required />
+        </div>
+        <div>
+            <button type="submit">Registruj se</button>
+        </div>
+    </form>
+</div>
+<script>
+    const forma = document.getElementById("register-form");
+    const porukaDiv = document.getElementById("poruka");
+
+    forma.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const username = document.getElementById("username").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        try {
+            const res = await fetch("/api/auth/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    username,
+                    email,
+                    password,
+                    zanrovi: [] // ako ih ne unosiš trenutno
+                })
+            });
+
+            if (!res.ok) {
+                const text = await res.text();
+                porukaDiv.innerText = text || "Greška pri registraciji.";
+                return;
+            }
+
+            // Uspešna registracija – redirekcija
+            window.location.href = "/login";
+        } catch (err) {
+            porukaDiv.innerText = "Greška u komunikaciji sa serverom.";
+        }
+    });
+</script>

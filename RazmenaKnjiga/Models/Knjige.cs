@@ -1,27 +1,42 @@
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System;
+using System.ComponentModel.DataAnnotations;  // Dodaj ovo
 
 namespace RazmenaKnjiga.Models
 {
-	public class Knjige
-	{
-		[BsonId]
-		[BsonRepresentation(BsonType.ObjectId)]
-		public string knjigeID { get; set; }
+    public class Knjiga
+    {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
 
-		[BsonElement("naslov")]
-		public string naslov { get; set; }
+        [BsonElement("Naslov")]
+        [Required(ErrorMessage = "Naslov je obavezan")]
+        [StringLength(100, ErrorMessage = "Naslov ne sme biti duži od 100 karaktera")]
+        public string Naslov { get; set; }
 
-		[BsonElement("autor")]
-		public string autor { get; set; }
+        [BsonElement("Autor")]
+        [Required(ErrorMessage = "Autor je obavezan")]
+        [StringLength(100, ErrorMessage = "Autor ne sme biti duži od 100 karaktera")]
+        public string Autor { get; set; }
 
-		[BsonElement("zanr")]
-		public string zanr { get; set; }
+        [StringLength(50)]
+        public string Zanr { get; set; }
 
-		[BsonElement("opis")]
-		public string opis { get; set; }
+        public string Opis { get; set; }
 
-		[BsonElement("korisnikID")]
-		public string korisnikID { get; set; } // ID korisnika koji je postavio knjigu
-	}
+        [StringLength(50)]
+        public string Stanje { get; set; }  // npr. Novo, Polovno, Oštećeno
+
+        [Required(ErrorMessage = "Grad je obavezan")]
+        [StringLength(50)]
+        public string Grad { get; set; }
+
+        public string SlikaBase64 { get; set; }  // Slika kao Base64 string
+
+        public DateTime DatumDodavanja { get; set; } = DateTime.UtcNow;
+
+        public string VlasnikId { get; set; }  // ID korisnika koji je postavio knjigu
+    }
 }

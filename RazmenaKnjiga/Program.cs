@@ -1,25 +1,46 @@
+using Microsoft.Extensions.Configuration;
+using MongoDB.Driver;
+using RazmenaKnjiga.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+var configuration = builder.Configuration;
+
+builder.Services.AddSingleton<IMongoClient>(sp =>
+{
+    return new MongoClient(configuration.GetSection("MongoDB:ConnectionString").Value);
+});
+
+builder.Services.AddSingleton<BookService>();
+builder.Services.AddScoped<UserService>();
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddRazorPages();      // <--- Dodato za Razor Pages
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+/*if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+}*/
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapRazorPages();      // <--- Dodato za Razor Pages
+
+// Preusmeri root na Login stranicu
+app.MapGet("/", context =>
+{
+    context.Response.Redirect("/login");
+    return Task.CompletedTask;
+});
 
 app.Run();
+
