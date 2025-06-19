@@ -1,4 +1,54 @@
 ﻿@page
 @model RazmenaKnjiga.Pages.IndexModel
 @{
+    ViewData["Title"] = "Glavni meni";
 }
+
+<nav class="main-menu">
+    <a href="/Index">📚 Dostupne knjige</a>
+    <a href="/AddBook">➕ Ponudi svoju knjigu</a>
+    <a href="/MyBooks">📄 Moji oglasi</a>
+    <a href="/Messages">💬 Poruke</a>
+    <a href="#" onclick="logout()">🚪 Odjava</a>
+</nav>
+
+<style>
+    .main-menu {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        margin: 30px 0;
+    }
+
+    .main-menu a {
+        padding: 12px 24px;
+        background-color: #1976d2;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: 16px;
+        transition: background-color 0.2s;
+    }
+
+    .main-menu a:hover {
+        background-color: #125ea2;
+    }
+</style>
+
+<script>
+    
+    const korisnik = JSON.parse(localStorage.getItem("korisnik"));
+
+    if (!korisnik) {
+        window.location.href = "/Login";
+    } else {
+        document.getElementById("korisnik-info").innerText = `👤 ${korisnik.email}`;
+    }
+
+    function logout() {
+        localStorage.removeItem("korisnik");
+        window.location.href = "/Login";
+    }
+</script>
