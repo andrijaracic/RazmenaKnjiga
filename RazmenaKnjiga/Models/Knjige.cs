@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
-using System.ComponentModel.DataAnnotations;  // Dodaj ovo
+using System.ComponentModel.DataAnnotations;  
 
 namespace RazmenaKnjiga.Models
 {
@@ -27,16 +27,16 @@ namespace RazmenaKnjiga.Models
         public string Opis { get; set; }
 
         [StringLength(50)]
-        public string Stanje { get; set; }  // npr. Novo, Polovno, Oštećeno
+        public string Stanje { get; set; }  
 
         [Required(ErrorMessage = "Grad je obavezan")]
         [StringLength(50)]
         public string Grad { get; set; }
 
-        public string SlikaBase64 { get; set; }  // Slika kao Base64 string
+        public string PutanjaSlike { get; set; }
 
         public DateTime DatumDodavanja { get; set; } = DateTime.UtcNow;
 
-        public string VlasnikId { get; set; }  // ID korisnika koji je postavio knjigu
+        public string VlasnikId { get; set; }  
     }
 }

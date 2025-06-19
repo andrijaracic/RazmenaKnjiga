@@ -12,7 +12,22 @@
     <a href="#" onclick="logout()">🚪 Odjava</a>
 </nav>
 
+<div id="knjige" class="grid-container"></div>
+
+<div class="pagination">
+    <button onclick="prevPage()">⬅ Prethodna</button>
+    <span id="stranica"></span>
+    <button onclick="nextPage()">Sledeća ➡</button>
+</div>
+
 <style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 0;
+    }
+
     .main-menu {
         display: flex;
         flex-wrap: wrap;
@@ -35,20 +50,105 @@
     .main-menu a:hover {
         background-color: #125ea2;
     }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 20px;
+        margin: 0 auto;
+        max-width: 1200px;
+        padding: 20px;
+    }
+
+    .book-card {
+        background-color: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .book-card img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+    }
+
+    .pagination {
+        margin: 20px 0;
+        text-align: center;
+    }
+
+    .pagination button {
+        padding: 8px 16px;
+        background-color: #1976d2;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        margin: 0 10px;
+        cursor: pointer;
+    }
+
+    .pagination button:hover {
+        background-color: #125ea2;
+    }
 </style>
 
 <script>
-    
     const korisnik = JSON.parse(localStorage.getItem("korisnik"));
 
     if (!korisnik) {
         window.location.href = "/Login";
-    } else {
-        document.getElementById("korisnik-info").innerText = `👤 ${korisnik.email}`;
     }
 
     function logout() {
         localStorage.removeItem("korisnik");
         window.location.href = "/Login";
     }
+
+    let stranica = 1;
+    const limit = 12;
+
+    async function ucitajKnjige() {
+        const res = await fetch(`/api/book?page=${stranica}&limit=${limit}`);
+        const knjige = await res.json();
+
+        const container = document.getElementById("knjige");
+        container.innerHTML = "";
+
+        if (knjige.length === 0 && stranica > 1) {
+            stranica--;
+            ucitajKnjige();
+            return;
+        }
+
+        knjige.forEach(knjiga => {
+            container.innerHTML += `
+                <div class="book-card">
+                    <img src="data:image/jpeg;base64,${knjiga.slikaBase64 || ''}" alt="Naslovna slika" />
+                    <h3>${knjiga.naslov}</h3>
+                    <p><strong>Autor:</strong> ${knjiga.autor}</p>
+                    <p><strong>Žanr:</strong> ${knjiga.zanr || '-'}</p>
+                    <p><strong>Grad:</strong> ${knjiga.grad}</p>
+                    <p><strong>Stanje:</strong> ${knjiga.stanje}</p>
+                </div>
+            `;
+        });
+
+        document.getElementById("stranica").innerText = `Stranica ${stranica}`;
+    }
+
+    function prevPage() {
+        if (stranica > 1) {
+            stranica--;
+            ucitajKnjige();
+        }
+    }
+
+    function nextPage() {
+        stranica++;
+        ucitajKnjige();
+    }
+
+    window.onload = ucitajKnjige;
 </script>
