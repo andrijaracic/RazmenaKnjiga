@@ -1,0 +1,47 @@
+﻿@page
+@model RazmenaKnjiga.Pages.DodajOglasModel
+@{
+    ViewData["Title"] = "Dodaj Oglas";
+}
+
+<h2>Dodaj Oglas</h2>
+
+<form method="post" enctype="multipart/form-data">
+    <div>
+        <label>Naslov:</label>
+        <input asp-for="NovaKnjiga.Naslov" required />
+    </div>
+    <div>
+        <label>Autor:</label>
+        <input asp-for="NovaKnjiga.Autor" required />
+    </div>
+    <div>
+        <label>Žanr:</label>
+        <input asp-for="NovaKnjiga.Zanr" />
+    </div>
+    <div>
+        <label>Stanje (novo/polovno):</label>
+        <select asp-for="NovaKnjiga.Stanje">
+            <option value="Novo">Novo</option>
+            <option value="Polovno">Polovno</option>
+        </select>
+    </div>
+    <div>
+        <label>Grad:</label>
+        <input asp-for="NovaKnjiga.Grad" required />
+    </div>
+    <div>
+        <label>Opis:</label>
+        <textarea asp-for="NovaKnjiga.Opis"></textarea>
+    </div>
+    <div>
+        <label>Slika (Base64 kodirano):</label>
+        <input type="file" asp-for="UploadSlika" />
+    </div>
+    <button type="submit">Sačuvaj oglas</button>
+</form>
+
+@if (Model.Poruka != null)
+{
+    <p>@Model.Poruka</p>
+}
