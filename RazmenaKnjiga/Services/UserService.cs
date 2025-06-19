@@ -31,5 +31,10 @@ namespace RazmenaKnjiga.Services
             await _users.InsertOneAsync(noviKorisnik);
             return noviKorisnik;
         }
+
+        public User Authenticate(string email, string password)
+        {
+            return _users.Find(u => u.Email == email && u.Password == password).FirstOrDefault();
+        }
     }
 }
