@@ -1,8 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using RazmenaKnjiga.Services;
-using RazmenaKnjiga.Helpers;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,24 +15,17 @@ builder.Services.AddSingleton<BookService>();
 builder.Services.AddScoped<UserService>();
 
 builder.Services.AddControllers();
-builder.Services.AddRazorPages();      // <--- Dodato za Razor Pages
+builder.Services.AddRazorPages();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddHttpClient();
-
-builder.Services.AddSwaggerGen(options =>
-{
-    options.OperationFilter<FileUploadOperation>();
-});
-
 
 var app = builder.Build();
 
-/*if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-}*/
+}
 
 app.UseHttpsRedirection();
 
@@ -43,9 +34,8 @@ app.UseStaticFiles();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapRazorPages();      // <--- Dodato za Razor Pages
+app.MapRazorPages();
 
-// Preusmeri root na Login stranicu
 app.MapGet("/", context =>
 {
     context.Response.Redirect("/login");
@@ -53,4 +43,3 @@ app.MapGet("/", context =>
 });
 
 app.Run();
-
