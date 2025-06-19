@@ -15,6 +15,9 @@ namespace RazmenaKnjiga.Services
             _knjige = database.GetCollection<Knjiga>("Knjige");
         }
 
+        public List<Knjiga> GetByVlasnik(string vlasnikId) =>
+            _knjige.Find(k => k.VlasnikId == vlasnikId).ToList();
+
 
         public List<Knjiga> Get() =>
             _knjige.Find(knjiga => true).ToList();

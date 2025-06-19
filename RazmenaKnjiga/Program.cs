@@ -13,6 +13,11 @@ builder.Services.AddSingleton<IMongoClient>(sp =>
 
 builder.Services.AddSingleton<BookService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddSingleton<MessagesService>();
+builder.Services.AddSingleton<RequestService>();
+
+
+
 
 builder.Services.AddControllers();
 builder.Services.AddRazorPages();      // <--- Dodato za Razor Pages

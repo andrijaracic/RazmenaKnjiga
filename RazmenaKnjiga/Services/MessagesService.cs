@@ -1,6 +1,6 @@
 using MongoDB.Driver;
 using Microsoft.Extensions.Configuration;
-using RazmenaKnjiga.Models;  /
+using RazmenaKnjiga.Models;  
 
 public class MessagesService
 {
