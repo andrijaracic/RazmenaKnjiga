@@ -33,5 +33,12 @@ namespace RazmenaKnjiga.Services
 
         public void Remove(string id) =>
             _knjige.DeleteOne(knjiga => knjiga.Id == id);
+
+        public List<Knjiga> GetByZanr(string zanr)
+        {
+            return _knjige.Find(k => k.Zanr.ToLower() == zanr.ToLower()).ToList();
+        }
+
+
     }
 }

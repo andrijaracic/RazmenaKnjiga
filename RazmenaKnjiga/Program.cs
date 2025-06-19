@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using RazmenaKnjiga.Services;
+using RazmenaKnjiga.Helpers;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
 
+builder.Services.AddSwaggerGen(options =>
+{
+    options.OperationFilter<FileUploadOperation>();
+});
+
+
 var app = builder.Build();
 
 /*if (app.Environment.IsDevelopment())
@@ -29,6 +37,8 @@ var app = builder.Build();
 }*/
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
 
 app.UseAuthorization();
 

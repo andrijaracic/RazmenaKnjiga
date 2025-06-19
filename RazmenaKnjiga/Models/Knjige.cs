@@ -1,7 +1,8 @@
-﻿using MongoDB.Bson;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
-using System.ComponentModel.DataAnnotations;  // Dodaj ovo
+using System.ComponentModel.DataAnnotations;
 
 namespace RazmenaKnjiga.Models
 {
@@ -9,16 +10,17 @@ namespace RazmenaKnjiga.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        [BindNever]
+        public string? Id { get; set; }
 
         [BsonElement("Naslov")]
         [Required(ErrorMessage = "Naslov je obavezan")]
-        [StringLength(100, ErrorMessage = "Naslov ne sme biti duži od 100 karaktera")]
+        [StringLength(100)]
         public string Naslov { get; set; }
 
         [BsonElement("Autor")]
         [Required(ErrorMessage = "Autor je obavezan")]
-        [StringLength(100, ErrorMessage = "Autor ne sme biti duži od 100 karaktera")]
+        [StringLength(100)]
         public string Autor { get; set; }
 
         [StringLength(50)]
@@ -27,16 +29,16 @@ namespace RazmenaKnjiga.Models
         public string Opis { get; set; }
 
         [StringLength(50)]
-        public string Stanje { get; set; }  // npr. Novo, Polovno, Oštećeno
+        public string Stanje { get; set; }
 
         [Required(ErrorMessage = "Grad je obavezan")]
         [StringLength(50)]
         public string Grad { get; set; }
 
-        public string SlikaBase64 { get; set; }  // Slika kao Base64 string
+        public string PutanjaSlike { get; set; }
 
         public DateTime DatumDodavanja { get; set; } = DateTime.UtcNow;
 
-        public string VlasnikId { get; set; }  // ID korisnika koji je postavio knjigu
+        public string VlasnikId { get; set; }
     }
 }
